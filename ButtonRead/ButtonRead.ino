@@ -1,6 +1,7 @@
 #include <SPI.h>
 /*
-  Basic idea on how to read if a button is pushed:
+  Basic idea on how to read if a button is pushed: 
+  Ref: https://wbsimms.com/use-74hc595-monitor-many-digital-inputs/
   
   On startup:
   Set all 74HC595 output pins high
@@ -43,7 +44,7 @@ void setup() {
 
   // Initiate the register
   writeToRegister(255); // Set all outputs to 1
-  Serial.println("Setting all buttons on!");
+  Serial.println("Setting all output pins ON!");
 
   // Attach our events
   attachInterrupt(digitalPinToInterrupt(interruptPin), pinRead, RISING);
