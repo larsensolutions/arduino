@@ -1,5 +1,5 @@
-# Arduino and ESP sketches
-Different sketches for the arduino and other microcontrollers (Like the ESP8266)
+# Arduino
+Different sketches for the arduino and other microcontrollers and IC's.
 
 ## General sketches
 The purpose of these sketches is to learn the basics and be able to apply the stuff in my bigger projects! These are also the sketches that might be of interest to other people.
@@ -26,3 +26,7 @@ Basically combines the stuff from the other sketches. In the end this will becom
 ## Resources
 
 * Generate circuit diagrams: [Thinkercad](https://www.tinkercad.com)
+
+## Contact
+
+Erik Andreas Larsen – [@grizzifrog](https://twitter.com/grizzlifrog) – eriklarsen.post@gmail.com
