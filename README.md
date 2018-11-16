@@ -2,7 +2,7 @@
 Different sketches for the arduino and other microcontrollers (Like the ESP8266)
 
 ## General sketches
-The purpose of these sketches is to learn the basics and be able to apply the stuff in my bigger projects! These are also the repos that might be of interest to other people
+The purpose of these sketches is to learn the basics and be able to apply the stuff in my bigger projects! These are also the sketches that might be of interest to other people.
 
 ### [ButtonRead](https://github.com/larsensolutions/arduino/tree/master/ButtonRead) Using single 8 bit 74HC575 to read push button inputs 
 Using a 74HC595 shift register to read button pushes
@@ -17,8 +17,8 @@ Using two 74HC595 shift registers to read button pushes. Code is scalable to rea
 ### [LedFlasher](https://github.com/larsensolutions/arduino/tree/master/LedFlasher) Using a 8 bit 74HC575 to toggle some LED's
 Using a 74HC595 shift registers to drive 3 LED's.
 
-
 ## Non generic sketches
+Very personalized and in progress stuff, and thus doesn't provide any value for other people.
 
 ### [RaspdusWifi](https://github.com/larsensolutions/arduino/tree/master/RaspdusWifi) ESP8266-07 Wifi chip, will serve as brain in the Raspdus controller project
-
+Basically combines the stuff from the other sketches. In the end this will become a remote control that connects to my wifi at home that talks to my home automation API to control for instance lights.
