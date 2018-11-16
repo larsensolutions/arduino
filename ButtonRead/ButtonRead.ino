@@ -1,7 +1,8 @@
 #include <SPI.h>
 /*
+  Basic idea on how to read if a button is pushed:
+  
   On startup:
-
   Set all 74HC595 output pins high
   The un-pressed buttons prevent current from flowing to the interrupt pin
   Once a button, current flows to the interrupt pin firing the interrupt event
