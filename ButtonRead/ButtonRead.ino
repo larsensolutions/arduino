@@ -1,4 +1,13 @@
 #include <SPI.h>
+/**
+ * BottonRead.ino
+ * by Erik Andreas Larsen
+ * 
+ * https://github.com/larsensolutions/arduino
+ * https://twitter.com/grizzlifrog
+ * 
+ **/
+
 /*
   Basic idea on how to read if a button is pushed: 
   Ref: https://wbsimms.com/use-74hc595-monitor-many-digital-inputs/

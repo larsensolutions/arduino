@@ -1,3 +1,12 @@
+/**
+ * LedFlasher.ino
+ * by Erik Andreas Larsen
+ * 
+ * https://github.com/larsensolutions/arduino
+ * https://twitter.com/grizzlifrog
+ * 
+ **/
+
 #include <SPI.h>
 const int SSpin = 10; //10 on the Arduino, 4 on the ESP;
 

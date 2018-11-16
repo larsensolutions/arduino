@@ -1,4 +1,12 @@
 #include <SPI.h>
+/**
+ * ButtonReadChain.ino
+ * by Erik Andreas Larsen
+ * 
+ * https://github.com/larsensolutions/arduino
+ * https://twitter.com/grizzlifrog
+ * 
+ **/
 
 /**
  * The yey or trick this time to get a less noise circuit is to add a conductor between the latch pins of the chained registers!!
@@ -13,8 +21,10 @@
  * /
 
 /*
+  Basic idea on how to read if a button is pushed: 
+  Ref: https://wbsimms.com/use-74hc595-monitor-many-digital-inputs/
+  
   On startup:
-
   Set all 74HC595 output pins high
   The un-pressed buttons prevent current from flowing to the interrupt pin
   Once a button, current flows to the interrupt pin firing the interrupt event
@@ -38,7 +48,7 @@ const int slaveSelectPin = 10;
 volatile bool buttonPressed = false;
 bool searching = false;
 
-// Helper class to make the code scalable in terms of number of shift registers we have.
+// Helper class to make the code scalable with regards to the number of shift registers we are using in the circuit.
 class Register {
     public:
     int data;
@@ -49,7 +59,7 @@ class Register {
     }
 };
 
-// Spesify how many registers we have in our curcuit
+// Specify how many registers we have in our curcuit
 // Have only tested up to two registers so far
 const int registerCount = 2;
 Register* registers = new Register[registerCount];
@@ -162,6 +172,7 @@ void writeToRegisters() {
   digitalWrite(slaveSelectPin, HIGH);
 }
 
+// Using this to confirm what buttons were pushed
 void printBinary(byte inByte)
 {
   Serial.print(inByte);

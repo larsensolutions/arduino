@@ -1,3 +1,12 @@
+/**
+ * RaspdusWifi.ino
+ * by Erik Andreas Larsen
+ * 
+ * https://github.com/larsensolutions/arduino
+ * https://twitter.com/grizzlifrog
+ * 
+ **/
+
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
