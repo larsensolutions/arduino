@@ -14,12 +14,16 @@ Using a 74HC595 shift register to read button pushes
 ### [ButtonReadChain](https://github.com/larsensolutions/arduino/tree/master/ButtonReadChain) Using several 8 bit 74HC575's to read push button inputs 
 Using two 74HC595 shift registers to read button pushes. Code is scalable to read from a # of shift registers.
 
-![Circuit diagram](ButtonReadChain/SN74HC595-ButtonInputReaderChained.png?raw=true "Sketch")
-
 * [Thinkercad sketch](https://www.tinkercad.com/things/7BMBGhKhBrG)
+
+![Circuit diagram](ButtonReadChain/SN74HC595-ButtonInputReaderChained.png?raw=true "Sketch")
 
 ### [LedFlasher](https://github.com/larsensolutions/arduino/tree/master/LedFlasher) Using a 8 bit 74HC575 to toggle some LED's
 Using a 74HC595 shift registers to drive 3 LED's.
+
+* [Thinkercad sketch](https://www.tinkercad.com/things/cHowXQvEdyA)
+
+![Circuit diagram](LedFlasher/ledflasher?raw=true "Sketch")
 
 ## Non generic sketches
 Very personalized and in progress stuff, and thus doesn't provide any value for other people.
