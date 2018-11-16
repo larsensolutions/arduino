@@ -22,3 +22,7 @@ Very personalized and in progress stuff, and thus doesn't provide any value for 
 
 ### [RaspdusWifi](https://github.com/larsensolutions/arduino/tree/master/RaspdusWifi) ESP8266-07 Wifi chip, will serve as brain in the Raspdus controller project
 Basically combines the stuff from the other sketches. In the end this will become a remote control that connects to my wifi at home that talks to my home automation API to control for instance lights.
+
+## Resources
+
+* Generate circuit diagrams: [Thinkercad](https://www.tinkercad.com)
