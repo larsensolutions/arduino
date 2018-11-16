@@ -23,7 +23,7 @@ Using a 74HC595 shift registers to drive 3 LED's.
 
 * [Thinkercad sketch](https://www.tinkercad.com/things/cHowXQvEdyA)
 
-![Circuit diagram](LedFlasher/ledflasher?raw=true "Sketch")
+![Circuit diagram](LedFlasher/ledflasher.png?raw=true "Sketch")
 
 ## Non generic sketches
 Very personalized and in progress stuff, and thus doesn't provide any value for other people.
