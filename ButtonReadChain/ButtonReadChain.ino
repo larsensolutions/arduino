@@ -18,6 +18,9 @@
  * "From now on those will be refered to as the dataPin, the clockPin and the latchPin respectively. 
  * Notice the 0.1"f capacitor on the latchPin, if you have some flicker 
  * when the latch pin pulses you can use a capacitor to even it out."
+ * 
+ * Resistors "slow" the flow of current. Capacitors "slow" the changes in the flow. 
+ * Of course "slow" is not correct but in the context of the common water metaphor, it works.
  * /
 
 /*
