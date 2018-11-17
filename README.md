@@ -5,7 +5,7 @@ Different sketches for the arduino and other microcontrollers and IC's.
 The purpose of these sketches is to learn the basics and be able to apply the stuff in my bigger projects! These are also the sketches that might be of interest to other people.
 
 ### [ButtonRead](https://github.com/larsensolutions/arduino/tree/master/ButtonRead) Using single 8 bit 74HC575 to read push button inputs 
-Using a 74HC595 shift register to read button pushes
+Using a 74HC595 shift register to read button pushes.
 
 * [Thinkercad sketch](https://www.tinkercad.com/things/dOxVGoxMftm)
 
