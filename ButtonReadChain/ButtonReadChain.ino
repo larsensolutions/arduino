@@ -21,9 +21,9 @@
  * 
  * Resistors "slow" the flow of current. Capacitors "slow" the changes in the flow. 
  * Of course "slow" is not correct but in the context of the common water metaphor, it works.
- * /
+ **/
 
-/*
+/**
   Basic idea on how to read if a button is pushed: 
   Ref: https://wbsimms.com/use-74hc595-monitor-many-digital-inputs/
   
@@ -38,12 +38,12 @@
       If the pin is high, that button IS pressed.
 
   Looping through each output pin in the 74HC595 is very fast as long as you’re not doing too much in the loop.
-*/
+**/
 
 // PINS
 
-const int interruptPin = 2;
-const int slaveSelectPin = 10;
+const int interruptPin = 2; // 2 on Arduino Due
+const int slaveSelectPin = 10; // 10 on Arduino Due
 
 // STATES
 
@@ -70,7 +70,7 @@ Register* registers = new Register[registerCount];
 void setup() {
   // Start serial and print script version
   Serial.begin(115200);
-  Serial.println("Button Read Chain: Version 5");
+  Serial.println("Button Read Chain: Version 7");
 
   // Set our pin modes
   pinMode(interruptPin, INPUT);
@@ -79,7 +79,7 @@ void setup() {
   // Initiate SPI (Serial Peripheral Interface)
   SPI.begin();
   SPI.setBitOrder(MSBFIRST);
-  SPI.setClockDivider(SPI_CLOCK_DIV2);
+  //SPI.setClockDivider(SPI_CLOCK_DIV2);
 
   // Initiate the register
   resetStates();
