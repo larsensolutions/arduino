@@ -14,19 +14,26 @@
 #include <ESP8266mDNS.h>
 #include <SPI.h>
 #include <ArduinoJson.h>
+#include <map>
 
 // This file contains the ssid and password!
 #include "secret_key.h"
+#include "74HC595.h"
 
 ESP8266WebServer server(80);
+Controller74HC595 controller(5, 4, 2);
 
 int prevVal = 0;
 
-void handleRoot() {
+std::map<int, int> light = {{1, 1}, {2, 2}, {4, 3}, {8, 4}};
+
+void handleRoot()
+{
   server.send(200, "text/plain", "hello from esp8266!");
 }
 
-void handleNotFound() {
+void handleNotFound()
+{
   String message = "File Not Found\n\n";
   message += "URI: ";
   message += server.uri();
@@ -35,21 +42,29 @@ void handleNotFound() {
   message += "\nArguments: ";
   message += server.args();
   message += "\n";
-  for (uint8_t i = 0; i < server.args(); i++) {
+  for (uint8_t i = 0; i < server.args(); i++)
+  {
     message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
   }
   server.send(404, "text/plain", message);
 }
 
-void setup(void) {
-
+void setup(void)
+{
   Serial.begin(115200);
+
+  while (!Serial)
+  {
+    delay(500);
+  }
+
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.println("");
 
   // Wait for connection
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED)
+  {
     delay(500);
     Serial.print(".");
   }
@@ -58,7 +73,8 @@ void setup(void) {
   Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  if (MDNS.begin("esp8266")) {
+  if (MDNS.begin("esp8266"))
+  {
     Serial.println("MDNS responder started");
   }
 
@@ -70,69 +86,60 @@ void setup(void) {
 
   server.onNotFound(handleNotFound);
 
+  delay(1000);
+
   server.begin();
   Serial.println("HTTP server started");
+  controller.begin();
 }
 
-void sendRequest(int val){
-    Serial.println("Sending POST");
-    StaticJsonBuffer<300> JSONbuffer;   //Declaring static JSON buffer
-    JsonObject& JSONencoder = JSONbuffer.createObject(); 
-    if (val < 30){
-      JSONencoder["status"] = "off";
-    }
-    else {
-      JSONencoder["value"] = val;
-    }
-  
-    char JSONmessageBuffer[300];
-    JSONencoder.prettyPrintTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
-    Serial.println(JSONmessageBuffer);
- 
-    HTTPClient http;    //Declare object of class HTTPClient
- 
-    http.begin("http://192.168.0.30:5000/api/v1/devices/5");      //Specify request destination
-    http.addHeader("Content-Type", "application/json");  //Specify content-type header
- 
-    int httpCode = http.PATCH(JSONmessageBuffer);   //Send the request
-    String payload = http.getString();                                        //Get the response payload
- 
-    Serial.println(httpCode);   //Print HTTP return code
-    Serial.println(payload);    //Print request response payload
+void patch(String url, JsonObject &JSONencoder)
+{
+  char JSONmessageBuffer[300];
+  JSONencoder.prettyPrintTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
+
+  HTTPClient http; // Declare object of class HTTPClient
+
+  http.begin(url); // Specify request destination
+  http.addHeader("Content-Type", "application/json");      // Specify content-type header
+
+  int httpCode = http.PATCH(JSONmessageBuffer); // Send the request
+  String payload = http.getString();            // Get the response payload
+
+  Serial.println(httpCode); // Print HTTP return code
 }
-const int totalSamples = 20;
-double samples = totalSamples;
 
-double total = 0;
-double currentVal = 0;
-double siblingVal = 0;
-int average = 0;
+void dim(int light, int val)
+{
+  StaticJsonBuffer<300> JSONbuffer; //Declaring static JSON buffer
+  JsonObject &JSONencoder = JSONbuffer.createObject();
+  if (val < 30)
+  {
+    JSONencoder["status"] = "off";
+  }
+  else
+  {
+    JSONencoder["value"] = val;
+  }
+   patch("http://192.168.0.30:5000/api/v1/devices/"+String(light), JSONencoder);
+}
 
-void loop(void) {  
-  
+void toggle(int light)
+{
+  StaticJsonBuffer<300> JSONbuffer; //Declaring static JSON buffer
+  JsonObject &JSONencoder = JSONbuffer.createObject();
+  JSONencoder["status"] = "toggle";
+  patch("http://192.168.0.30:5000/api/v1/devices/"+String(light), JSONencoder);
+}
+
+void loop(void)
+{
   server.handleClient();
-  currentVal = analogRead(A0);
-  currentVal = map(currentVal, 0, 1023, 0, 255);
-  
-  if(siblingVal==currentVal){
-    return;
-  }
-  siblingVal = currentVal;
-  samples--;
-  Serial.println(currentVal);
-  delay(20);
-  
- 
-  total += currentVal;
-
-  if(samples == 0){
-    samples = totalSamples;
-    average = total/samples;
-    total = 0;
-  }
-
-  if (abs(prevVal-average) > 15){
-      sendRequest(average);
-      prevVal = average;
-    }
+  if (controller.needToHandleButtonPress())
+  {
+    delay(500);
+    // Light API indexes start at 1, so taking care of that with the ++
+    toggle(controller.activeButtonIndex+=1);
+  };
+  delay(100);
 }
