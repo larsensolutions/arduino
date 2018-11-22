@@ -1,8 +1,8 @@
 # Arduino
 Different sketches for the arduino and other microcontrollers and IC's.
 
-## General sketches
-The purpose of these sketches is to learn the basics and be able to apply the stuff in my bigger projects! These are also the sketches that might be of interest to other people.
+## Sketches
+The purpose of most of these sketches is to learn the basics and be able to apply the stuff in my bigger projects!
 
 ### [ButtonRead](https://github.com/larsensolutions/arduino/tree/master/ButtonRead) Using single 8 bit 74HC575 to read push button inputs 
 Using a 74HC595 shift register to read button pushes.
@@ -28,9 +28,6 @@ Using a 74HC595 shift registers to drive 3 LED's.
 
 ### [WebSocket](https://github.com/larsensolutions/arduino/tree/master/WebSocket) Using Websocket data to control LED status
 Using a 74HC595 shift registers to drive LED status using data received from Websocket connection.
-
-## Non generic sketches
-Very personalized and in progress stuff, and thus doesn't provide any value for other people.
 
 ### [RaspdusWifi](https://github.com/larsensolutions/arduino/tree/master/RaspdusWifi) ESP8266-07 Wifi chip, will serve as brain in the Raspdus controller project
 Basically combines the stuff from the other sketches. In the end this will become a remote control that connects to my wifi at home that talks to my home automation API to control for instance lights.
