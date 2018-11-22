@@ -15,7 +15,15 @@ void pinRead()
   buttonPressed = true;
 }
 
-// Helper class to make the code scalable with regards to the number of shift registers we are using in the circuit.
+// Helpes 
+struct RegisterData
+{
+  int slot;
+  int position;
+  int value;
+};
+
+// Making the code scalable with regards to the number of shift registers we are using in the circuit.
 class Register
 {
 public:
@@ -39,6 +47,9 @@ private:
 
 public:
   int activeButtonIndex;
+  Controller74HC595(int slaveSelectPin, int registerCount) : Controller74HC595(-1, slaveSelectPin, registerCount)
+  {
+  }
   Controller74HC595(int interruptPin, int slaveSelectPin, int registerCount)
   {
     this->interruptPin = interruptPin;
@@ -55,17 +66,18 @@ public:
       Serial.println("Controller74HC595: Initializing");
     }
     // Set our pin modes
-    pinMode(interruptPin, INPUT);
     pinMode(slaveSelectPin, OUTPUT);
-
+    if (interruptPin > -1)
+    {
+      pinMode(interruptPin, INPUT);
+      attachInterrupt(digitalPinToInterrupt(interruptPin), pinRead, RISING);
+    }
     // Initiate SPI (Serial Peripheral Interface)
     SPI.begin();
     SPI.setBitOrder(MSBFIRST);
 
     // Initiate the register
     resetStates();
-    // Attach our events
-    attachInterrupt(digitalPinToInterrupt(interruptPin), pinRead, RISING);
   }
 
   bool needToHandleButtonPress()
@@ -108,6 +120,11 @@ public:
       }
     }
     return false;
+  }
+  void writeRegisterData(RegisterData data)
+  {
+    bitWrite(registers[data.slot].data, data.position, data.value);
+    writeToRegisters();
   }
 
 private:
