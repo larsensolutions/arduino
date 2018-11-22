@@ -8,11 +8,12 @@
  **/
 
 #include <SPI.h>
-const int SSpin = 10; //10 on the Arduino, 4 on the ESP;
+const int SSpin = 16; //10 on the Arduino, 4 on the ESP;
 
 void setup() {
   Serial.begin(115200); 
   pinMode(SSpin, OUTPUT);
+  digitalWrite(SSpin, HIGH);
   SPI.begin();
   SPI.setBitOrder(MSBFIRST);
 }

@@ -26,6 +26,9 @@ Using a 74HC595 shift registers to drive 3 LED's.
 
 ![Circuit diagram](LedFlasher/ledflasher.png?raw=true "Sketch")
 
+### [WebSocket](https://github.com/larsensolutions/arduino/tree/master/WebSocket) Using Websocket data to control LED status
+Using a 74HC595 shift registers to drive LED status using data received from Websocket connection.
+
 ## Non generic sketches
 Very personalized and in progress stuff, and thus doesn't provide any value for other people.
 
