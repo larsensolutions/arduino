@@ -57,7 +57,7 @@ public:
     this->registerCount = registerCount;
   }
 
-  void begin()
+  void begin(int state)
   {
     registers = new Register[registerCount];
 
@@ -77,7 +77,7 @@ public:
     SPI.setBitOrder(MSBFIRST);
 
     // Initiate the register
-    resetStates();
+    resetStates(state);
   }
 
   bool needToHandleButtonPress()
@@ -96,7 +96,7 @@ public:
         readButtonStates(registers[i]);
       }
       // When we are done, we reset the states and return wether this was a true button press or not
-      resetStates();
+      resetStates(255);
       return isButtonPressed();
     }
     return false;
@@ -128,12 +128,12 @@ public:
   }
 
 private:
-  void resetStates()
+  void resetStates(int to)
   {
     // 1. Important to set all register pins to 1 (ON) before ending the search!
     // Because we will retrigger the RAISE condition on our interruption pin
     // if the button is still pressed. Which is likely due to how fast the loop is.
-    setDataToAllRegisters(255); // Equals to 11111111
+    setDataToAllRegisters(to); // Equals to 11111111
     writeToRegisters();
 
     // 2. Updates our states, we are no longer searching, and we know we won't retrigger

@@ -159,8 +159,8 @@ void setup(void)
 
   delay(500);
 
-  btnController.begin();
-  ledController.begin();
+  btnController.begin(255);
+  ledController.begin(0);
 
   delay(500);
 
