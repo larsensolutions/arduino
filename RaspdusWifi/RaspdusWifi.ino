@@ -18,7 +18,6 @@
 #include <map>
 #include <ESPAsyncHTTPClient.h>
 
-
 // This file contains the ssid and password!
 #include "secret_key.h"
 #include "74HC595.h"
@@ -173,54 +172,25 @@ void setup(void)
   webSocket.setReconnectInterval(5000);
 }
 
-void patch(String url, JsonObject &JSONencoder)
+// Callbacks from async http requests
+// Consider refactoring
+void readSucceeded()
 {
-  char JSONmessageBuffer[300];
-  JSONencoder.prettyPrintTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
-  HTTPClient http; // Declare object of class HTTPClient
-  http.begin(url);                                    // Specify request destination
-  http.addHeader("Content-Type", "application/json"); // Specify content-type header
-  int httpCode = http.PATCH(JSONmessageBuffer); // Send the request
-  http.end();
+  // Not really interested in the response
 }
 
-void dim(int light, int val)
+void readFailed(String msg)
 {
-  StaticJsonBuffer<300> JSONbuffer; //Declaring static JSON buffer
-  JsonObject &JSONencoder = JSONbuffer.createObject();
-  if (val < 30)
-  {
-    JSONencoder["status"] = "off";
-  }
-  else
-  {
-    JSONencoder["value"] = val;
-  }
-  patch("http://192.168.0.30:5000/api/v1/devices/" + String(light), JSONencoder);
+  DEBUG(msg);
 }
-
-void toggle(int light)
-{
-  StaticJsonBuffer<300> JSONbuffer; //Declaring static JSON buffer
-  JsonObject &JSONencoder = JSONbuffer.createObject();
-  JSONencoder["status"] = "toggle";
-  patch("http://192.168.0.30:5000/api/v1/devices/" + String(light), JSONencoder);
-}
- void readSucceeded() {
-    String body = httpClient.getBody();
-  }
-  
-  void readFailed(String msg) {
-	  DEBUG(msg);
-  }
 
 void loop(void)
 {
-  //server.handleClient();
+  server.handleClient();
   if (btnController.needToHandleButtonPress())
   {
+    // Async http requests, so we can continue listening for button clicks
     // Light API indexes start at 1, so taking care of that with the ++
-    //toggle(btnController.activeButtonIndex += 1);
     httpClient.initialize("http://192.168.0.30:5000/api/v1/toggle/" + String(btnController.activeButtonIndex += 1));
     httpClient.makeRequest(readSucceeded, readFailed);
   };
