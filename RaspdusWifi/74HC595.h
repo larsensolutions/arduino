@@ -9,7 +9,7 @@
  **/
 
 // Not able to move this into a class (needs to be static, causing usage problems)
-volatile bool buttonPressed = false;
+volatile static bool buttonPressed = false;
 void pinRead()
 {
   buttonPressed = true;
@@ -86,6 +86,7 @@ public:
     // lets find the buttons being pressed!
     if (buttonPressed && !searching)
     {
+      searching = true;
       // Allow some delay to enable read of multiple buttons.
       // It is almost human impossible to press two buttons down at the excat time.
       // For now, we only register 1 button press.
@@ -111,8 +112,12 @@ public:
       {
         continue;
       }
+      Serial.print("Register ");
+      Serial.println(i);
+      printBinary(registers[i].buttonStates);
       // Find what button index was pressed
       int t = getHighBitIndex(registers[i].buttonStates);
+      Serial.println(t);
       if (t > -1)
       {
         activeButtonIndex = (i * 8) + t;
@@ -138,7 +143,7 @@ private:
 
     // 2. Updates our states, we are no longer searching, and we know we won't retrigger
     // the interrupt again.
-    this->searching = false;
+    searching = false;
     buttonPressed = false;
 
     // If we do want to know how long the button is pressed, or continue trigger when button is pressed,
@@ -157,7 +162,6 @@ private:
   // If this is forgotten our buttonStates are never set (they only live in the scope of the function)
   void readButtonStates(Register &reg)
   {
-    this->searching = true;
     int buttonsOn = 0;
     int check = 1; // Equals to 00000001
     for (int i = 0; i < 8; i++)

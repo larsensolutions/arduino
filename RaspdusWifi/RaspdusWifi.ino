@@ -16,6 +16,8 @@
 #include <ArduinoJson.h>
 #include <WebSocketsClient.h>
 #include <map>
+#include <ESPAsyncHTTPClient.h>
+
 
 // This file contains the ssid and password!
 #include "secret_key.h"
@@ -24,7 +26,8 @@
 ESP8266WebServer server(80);
 WebSocketsClient webSocket;
 Controller74HC595 btnController(5, 4, 2);
-Controller74HC595 ledController(16, 1);
+Controller74HC595 ledController(16, 2);
+AsyncHTTPClient httpClient;
 
 int prevVal = 0;
 
@@ -76,7 +79,6 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
       RegisterData data = convert(id, value);
       ledController.writeRegisterData(data);
     }
-    Serial.printf("[WSc] get text: %s\n", payload);
     break;
   }
   case WStype_BIN:
@@ -93,7 +95,7 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
 
 void handleRoot()
 {
-  server.send(200, "text/plain", "hello from esp8266!");
+  server.send(200, "text/plain", "Raspdus box is live!");
 }
 
 void handleNotFound()
@@ -175,16 +177,11 @@ void patch(String url, JsonObject &JSONencoder)
 {
   char JSONmessageBuffer[300];
   JSONencoder.prettyPrintTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
-
   HTTPClient http; // Declare object of class HTTPClient
-
   http.begin(url);                                    // Specify request destination
   http.addHeader("Content-Type", "application/json"); // Specify content-type header
-
   int httpCode = http.PATCH(JSONmessageBuffer); // Send the request
-  String payload = http.getString();            // Get the response payload
-
-  Serial.println(httpCode); // Print HTTP return code
+  http.end();
 }
 
 void dim(int light, int val)
@@ -209,16 +206,24 @@ void toggle(int light)
   JSONencoder["status"] = "toggle";
   patch("http://192.168.0.30:5000/api/v1/devices/" + String(light), JSONencoder);
 }
+ void readSucceeded() {
+    String body = httpClient.getBody();
+  }
+  
+  void readFailed(String msg) {
+	  DEBUG(msg);
+  }
 
 void loop(void)
 {
-  server.handleClient();
-  webSocket.loop();
+  //server.handleClient();
   if (btnController.needToHandleButtonPress())
   {
-    delay(500);
     // Light API indexes start at 1, so taking care of that with the ++
-    toggle(btnController.activeButtonIndex += 1);
+    //toggle(btnController.activeButtonIndex += 1);
+    httpClient.initialize("http://192.168.0.30:5000/api/v1/toggle/" + String(btnController.activeButtonIndex += 1));
+    httpClient.makeRequest(readSucceeded, readFailed);
   };
-  delay(100);
+  delay(20);
+  webSocket.loop();
 }
