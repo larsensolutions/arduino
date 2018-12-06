@@ -39,8 +39,7 @@ Basically combines the stuff from the other sketches. In the end this will becom
 ![Box prints](RaspdusWifi/raspdus-box-prints.jpg?raw=true "Box prints")
 ![Box wiring](RaspdusWifi/raspdus-box-wiring.jpg?raw=true "Box wiring")
 
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Wifi controller demonstration! 3d printed layout of appartment to show where the lights are with LEDs. The LED states are synced (so I can also use my app). I love the tiny toilet 😁 Parts from <a href="https://twitter.com/kjellcoNorge?ref_src=twsrc%5Etfw">@kjellcoNorge</a> <a href="https://twitter.com/telldus?ref_src=twsrc%5Etfw">@telldus</a> <a href="https://twitter.com/arduino?ref_src=twsrc%5Etfw">@arduino</a> <a href="https://twitter.com/hashtag/esp8266?src=hash&amp;ref_src=twsrc%5Etfw">#esp8266</a> <a href="https://twitter.com/hashtag/Python?src=hash&amp;ref_src=twsrc%5Etfw">#Python</a> <a href="https://twitter.com/hashtag/IoT?src=hash&amp;ref_src=twsrc%5Etfw">#IoT</a> <a href="https://twitter.com/Hacksterio?ref_src=twsrc%5Etfw">@Hacksterio</a> <a href="https://twitter.com/hashtag/3DPrinting?src=hash&amp;ref_src=twsrc%5Etfw">#3DPrinting</a> <a href="https://t.co/gGoQ6ltFRx">pic.twitter.com/gGoQ6ltFRx</a></p>&mdash; Erik Larsen (@grizzlifrog) <a href="https://twitter.com/grizzlifrog/status/1070663566863290368?ref_src=twsrc%5Etfw">December 6, 2018</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+[Video on twitter demonstrating the Raspdus box](https://twitter.com/grizzlifrog/status/1070663566863290368)
 
 
 #### 3D prints source files
