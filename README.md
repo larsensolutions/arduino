@@ -53,7 +53,7 @@ Basically combines the stuff from the other sketches. This is a remote control t
 
 ## Resources
 
-* Generate circuit diagrams: [Thinkercad](https://www.tinkercad.com)
+* Generate circuit diagrams adn 3D prints: [Thinkercad](https://www.tinkercad.com)
 
 ## Contact
 
