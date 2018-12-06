@@ -42,10 +42,12 @@ Basically combines the stuff from the other sketches. In the end this will becom
 [Video on twitter demonstrating the Raspdus box](https://twitter.com/grizzlifrog/status/1070663566863290368)
 
 
-#### 3D prints source files
+#### Custom 3D prints source files
 * The box (print coloured parts separately) [Tinkercad 3D print](https://www.tinkercad.com/things/5O3gAvxATRC/edit?sharecode=LnFBwAcFzZKmgHHJWiTbrchXy2RChrDAEr17kh_O0ms=)
 * The apartment [Tinkercad 3D print](https://www.tinkercad.com/things/06itOJWX7F3/edit?sharecode=p6LfuG1Tc5tmdaZJKfttCCOc3zg3f6xt6FtNrXc_VN0=)
 * Logo and labels [Tinkercad 3D print](https://www.tinkercad.com/things/jhPKKVwyEU6-raspdus-box-logo-and-labels/edit?sharecode=u3jyjOwCSqnDHdXntYfT9-1s8Q0ZC1yVMoiltZoRI98=)
+* All the other litle things was found on [Thingiverse](https://www.thingiverse.com/)
+* All .gx files are located here [.gx print files](https://github.com/larsensolutions/arduino/tree/master/RaspdusWifi/prints)
 
 ## Resources
 
