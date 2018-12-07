@@ -36,14 +36,14 @@ Basically combines the stuff from the other sketches. This is a remote control t
 
 * [Thinkercad sketch](https://www.tinkercad.com/things/98GHd9cAQSt)
 
-![Rough sketch of circuit diagram](RaspdusWifi/raspdus-wifi-controller-circuit.jpg?raw=true "Rough sketch of circuit diagram")
+![Rough sketch of circuit diagram](RaspdusWifi/images/raspdus-wifi-controller-circuit.jpg?raw=true "Rough sketch of circuit diagram")
 
 #### Final results
 
-![Box complete](RaspdusWifi/raspdus-box-complete.jpg?raw=true "Box complete")
-![Box knobs](RaspdusWifi/raspdus-box-knobs.jpg?raw=true "Box knobs")
-![Box prints](RaspdusWifi/raspdus-box-prints.jpg?raw=true "Box prints")
-![Box wiring](RaspdusWifi/raspdus-box-wiring.jpg?raw=true "Box wiring")
+![Box complete](RaspdusWifi/images/raspdus-box-complete.jpg?raw=true "Box complete")
+![Box knobs](RaspdusWifi/images/raspdus-box-knobs.jpg?raw=true "Box knobs")
+![Box prints](RaspdusWifi/images/raspdus-box-prints.jpg?raw=true "Box prints")
+![Box wiring](RaspdusWifi/images/raspdus-box-wiring.jpg?raw=true "Box wiring")
 
 [Video on twitter demonstrating the Raspdus box](https://twitter.com/grizzlifrog/status/1070663566863290368)
 
