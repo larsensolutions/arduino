@@ -61,10 +61,7 @@ public:
   {
     registers = new Register[registerCount];
 
-    if (Serial)
-    {
-      Serial.println("Controller74HC595: Initializing");
-    }
+    Serial.println("Controller74HC595: Initializing");
     // Set our pin modes
     pinMode(slaveSelectPin, OUTPUT);
     if (interruptPin > -1)
@@ -130,6 +127,14 @@ public:
   {
     bitWrite(registers[data.slot].data, data.position, data.value);
     writeToRegisters();
+  }
+
+  void printData()
+  {
+    for (int i = 0; i < registerCount; i++)
+    {
+      printBinary(registers[i].data);
+    }
   }
 
 private:

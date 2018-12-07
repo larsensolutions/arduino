@@ -71,10 +71,6 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
       int value = parsed["value"];
       int id = ((int)parsed["id"]) - 1;
 
-      Serial.println(sensorType);
-      Serial.println(value);
-      Serial.println(id);
-
       RegisterData data = convert(id, value);
       ledController.writeRegisterData(data);
     }
@@ -112,6 +108,33 @@ void handleNotFound()
     message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
   }
   server.send(404, "text/plain", message);
+}
+
+void initLEDstates()
+{
+  Serial.println("Initialise LED states");
+  HTTPClient http;                                      // Declare object of class HTTPClient
+  http.begin("http://192.168.0.30:5000/api/v1/states"); // Specify request destination
+  int httpCode = http.GET();                            // Send the request
+  String payload = http.getString();
+  
+  const size_t bufferSize = http.getSize(); //JSON_ARRAY_SIZE(16) + 16*JSON_OBJECT_SIZE(4) + 870;
+  DynamicJsonBuffer jsonBuffer(bufferSize);
+
+  JsonArray& root = jsonBuffer.parseArray(payload);
+  if (root.success())
+  {
+    for (JsonObject& device : root)
+    {
+      int id = device["id"];
+      int value = device["state"];
+      RegisterData data = convert(id-=1, value); // Adjust for 0 index
+      ledController.writeRegisterData(data);
+    }
+  }else{
+    Serial.println("Could not parse LED states");
+  }
+  http.end();
 }
 
 void setup(void)
@@ -170,6 +193,10 @@ void setup(void)
   webSocket.onEvent(webSocketEvent);
   // try ever 5000 again if connection has failed
   webSocket.setReconnectInterval(5000);
+
+  delay(100);
+  initLEDstates();
+  delay(100);
 }
 
 // Callbacks from async http requests
