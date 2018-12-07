@@ -34,6 +34,10 @@ Using a 74HC595 shift registers to drive LED status using data received from Web
 ### [RaspdusWifi](https://github.com/larsensolutions/arduino/tree/master/RaspdusWifi) ESP8266-07 Wifi chip, will serve as brain in the Raspdus controller project
 Basically combines the stuff from the other sketches. This is a remote control that connects to my wifi at home that talks to my home automation API to control the lights!
 
+* [Thinkercad sketch](https://www.tinkercad.com/things/98GHd9cAQSt)
+
+![Rough sketch of circuit diagram](RaspdusWifi/raspdus-wifi-controller-circuit.jpg?raw=true "Rough sketch of circuit diagram")
+
 #### Final results
 
 ![Box complete](RaspdusWifi/raspdus-box-complete.jpg?raw=true "Box complete")
@@ -42,7 +46,6 @@ Basically combines the stuff from the other sketches. This is a remote control t
 ![Box wiring](RaspdusWifi/raspdus-box-wiring.jpg?raw=true "Box wiring")
 
 [Video on twitter demonstrating the Raspdus box](https://twitter.com/grizzlifrog/status/1070663566863290368)
-
 
 #### Custom 3D prints source files
 * The box (print coloured parts separately) [Tinkercad 3D print](https://www.tinkercad.com/things/5O3gAvxATRC/edit?sharecode=LnFBwAcFzZKmgHHJWiTbrchXy2RChrDAEr17kh_O0ms=)
