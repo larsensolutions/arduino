@@ -60,6 +60,7 @@ Basically combines the stuff from the other sketches. This is a remote control t
 ## Resources
 
 * Generate circuit diagrams (very simple ones) and 3D prints: [Tinkercad](https://www.tinkercad.com)
+* Generate circuit diagrams [Fritzing](http://fritzing.org/home/)
 
 ## Contact
 
