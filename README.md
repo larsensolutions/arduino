@@ -37,6 +37,7 @@ Basically combines the stuff from the other sketches. This is a remote control t
 * [Tinkercad sketch](https://www.tinkercad.com/things/98GHd9cAQSt)
 
 ![Rough sketch of circuit diagram](RaspdusWifi/images/raspdus-wifi-controller-circuit.jpg?raw=true "Rough sketch of circuit diagram")
+![PCB circuit using Fritzing software](RaspdusWifi/images/raspdus-wifi-controller-circuit-fritzing.jpg?raw=true "PCB circuit")
 
 #### Final results
 
@@ -61,6 +62,7 @@ Basically combines the stuff from the other sketches. This is a remote control t
 
 * Generate circuit diagrams (very simple ones) and 3D prints: [Tinkercad](https://www.tinkercad.com)
 * Generate circuit diagrams [Fritzing](http://fritzing.org/home/)
+* Order PCB prototype boards [PCBway](https://www.pcbway.com)
 
 ## Contact
 
