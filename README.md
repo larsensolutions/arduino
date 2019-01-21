@@ -60,11 +60,11 @@ Basically combines the stuff from the other sketches. This is a remote control t
 
 ![PCB circuit with components](RaspdusWifi/images/raspdus-wifi-controller-circuit-with-components.jpg?raw=true "PCB circuit with components")
 
-#### Final results
+#### Final prototype results
 
 ![Box complete](RaspdusWifi/images/raspdus-box-complete.jpg?raw=true "Box complete")
 
-#### Build in progress
+#### Prototype build in progress
 
 ![Box knobs](RaspdusWifi/images/raspdus-box-knobs.jpg?raw=true "Box knobs")
 ![Box prints](RaspdusWifi/images/raspdus-box-prints.jpg?raw=true "Box prints")
