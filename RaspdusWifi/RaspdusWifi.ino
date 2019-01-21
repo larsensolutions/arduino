@@ -24,13 +24,11 @@
 
 ESP8266WebServer server(80);
 WebSocketsClient webSocket;
-Controller74HC595 btnController(5, 4, 2);
+Controller74HC595 btnController(4, 5, 2); // On Fritzing component, PIN 4 & 5 are switched around! Very important to know!
 Controller74HC595 ledController(16, 2);
 AsyncHTTPClient httpClient;
 
 int prevVal = 0;
-
-std::map<int, int> light = {{1, 1}, {2, 2}, {4, 3}, {8, 4}};
 
 struct RegisterData convert(int id, int value)
 {
