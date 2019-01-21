@@ -34,10 +34,29 @@ Using a 74HC595 shift registers to drive LED status using data received from Web
 ### [RaspdusWifi](https://github.com/larsensolutions/arduino/tree/master/RaspdusWifi) ESP8266-07 Wifi chip, will serve as brain in the Raspdus controller project
 Basically combines the stuff from the other sketches. This is a remote control that connects to my wifi at home that talks to my home automation API to control the lights!
 
+#### Components
+* 1 x ESP8266-07 wifi module
+* 1 x LD33V 3.3V regulator
+* 4 x 74HC595 shift registers
+* 1 x 0.1uF ceramic capacitator
+* 1 x 10uF polarized capacitator
+* 1 x 10K resistor
+* 16 x 470 ohm resistors
+* 16 x zener diodes
+* 6 x six-position male pin connector
+* 3 x two-position male pin connectors
+* 1 x two-position screw terminal
+
 * [Tinkercad sketch](https://www.tinkercad.com/things/98GHd9cAQSt)
 
 ![Rough sketch of circuit diagram](RaspdusWifi/images/raspdus-wifi-controller-circuit.jpg?raw=true "Rough sketch of circuit diagram")
 ![PCB circuit using Fritzing software](RaspdusWifi/images/raspdus-wifi-controller-circuit-fritzing.jpg?raw=true "PCB circuit")
+
+* Ordered the PCB print from [PCBway.com](http://pcbway.com), here is what it looked like
+![PCB circuit without components](RaspdusWifi/images/raspdus-wifi-controller-circuit-no-components.jpg?raw=true "PCB circuit without components")
+
+[Video on youtube showing the process of soldering](https://youtu.be/xztIZzjC5tE)
+![PCB circuit with components](RaspdusWifi/images/raspdus-wifi-controller-circuit-with-components.jpg?raw=true "PCB circuit with components")
 
 #### Final results
 
