@@ -52,10 +52,12 @@ Basically combines the stuff from the other sketches. This is a remote control t
 ![Rough sketch of circuit diagram](RaspdusWifi/images/raspdus-wifi-controller-circuit.jpg?raw=true "Rough sketch of circuit diagram")
 ![PCB circuit using Fritzing software](RaspdusWifi/images/raspdus-wifi-controller-circuit-fritzing.jpg?raw=true "PCB circuit")
 
-* Ordered the PCB print from [PCBway.com](http://pcbway.com), here is what it looked like
+#### Ordered the PCB print from [PCBway.com](http://pcbway.com), here is what it looked like
+
 ![PCB circuit without components](RaspdusWifi/images/raspdus-wifi-controller-circuit-no-components.jpg?raw=true "PCB circuit without components")
 
-[Video on youtube showing the process of soldering](https://youtu.be/xztIZzjC5tE)
+#### [Video on youtube showing the process of soldering](https://youtu.be/xztIZzjC5tE)
+
 ![PCB circuit with components](RaspdusWifi/images/raspdus-wifi-controller-circuit-with-components.jpg?raw=true "PCB circuit with components")
 
 #### Final results
