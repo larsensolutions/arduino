@@ -85,6 +85,12 @@ Basically combines the stuff from the other sketches. This is a remote control t
 * Generate circuit diagrams [Fritzing](http://fritzing.org/home/)
 * Order PCB prototype boards [PCBway](https://www.pcbway.com)
 
+### [Motor](https://github.com/larsensolutions/arduino/tree/master/Motor) Under development. ROV control
+Under development. Should control 3 ESC's, 1 servo and a couple of relays to control lights.
+
+### [MotorCalibration](https://github.com/larsensolutions/arduino/tree/master/MotorCalibration) Under development. ESC calibration script
+ESC calibration script
+
 ## Contact
 
 Erik Andreas Larsen – [@grizzifrog](https://twitter.com/grizzlifrog) – eriklarsen.post@gmail.com
