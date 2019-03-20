@@ -1,6 +1,8 @@
 // Source: https://github.com/RuiSantosdotme/Random-Nerd-Tutorials/blob/master/Projects/Arduino_WS2812B_Color_Palette.ino
 
-#include <FastLED.h>
+#include "help.h"
+
+int sensorpin = 2;                 // analog pin used to connect the sharp sensor
 
 #define LED_PIN     5
 #define NUM_LEDS    6
@@ -36,25 +38,54 @@ TBlendType    currentBlending;
 extern CRGBPalette16 myRedWhiteBluePalette;
 extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
 
+bool isOn = false;
+bool hasChanged = false;
 
 void setup() {
+
+    Serial.begin(9600);
     delay( 3000 ); // power-up safety delay
+
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(  BRIGHTNESS );
-    
+
     currentPalette = RainbowColors_p;
     currentBlending = LINEARBLEND;
+
+    pinMode(sensorpin, INPUT);
 }
 
-
+double loops = 20;
+double avg = 0;
+int nloop = 0;
 void loop()
 {
-    ChangePalettePeriodically();
-    
+    int val = digitalRead(sensorpin);
+    if(nloop < loops){
+        avg += val;
+        nloop++;
+    }else{
+        if(avg/loops < 1){
+            isOn = true;
+        }else{
+            isOn = false;
+            hasChanged = false;
+            SetPalette(0);
+        }
+        nloop = 0;
+        avg = 0;
+    }
+
+    if(isOn && !hasChanged){
+        hasChanged = true;
+        ChangePalette();
+        Serial.println("Change palette");
+    }
+
     static uint8_t startIndex = 0;
     startIndex = startIndex + 1; /* motion speed */
     
-    FillLEDsFromPaletteColors( startIndex);
+    FillLEDsFromPaletteColors(startIndex);
     
     FastLED.show();
     FastLED.delay(1000 / UPDATES_PER_SECOND);
@@ -100,19 +131,21 @@ void ChangePalettePeriodically()
     }
 }
 
+
 // This function fills the palette with totally random colors.
-void SetupTotallyRandomPalette()
+CRGBPalette16 SetupTotallyRandomPalette()
 {
     for( int i = 0; i < 16; i++) {
         currentPalette[i] = CHSV( random8(), 255, random8());
     }
+    return currentPalette;
 }
 
 // This function sets up a palette of black and white stripes,
 // using code.  Since the palette is effectively an array of
 // sixteen CRGB colors, the various fill_* functions can be used
 // to set them up.
-void SetupBlackAndWhiteStripedPalette()
+CRGBPalette16 SetupBlackAndWhiteStripedPalette()
 {
     // 'black out' all 16 palette entries...
     fill_solid( currentPalette, 16, CRGB::Black);
@@ -121,11 +154,11 @@ void SetupBlackAndWhiteStripedPalette()
     currentPalette[4] = CRGB::White;
     currentPalette[8] = CRGB::White;
     currentPalette[12] = CRGB::White;
-    
+    return currentPalette;
 }
 
 // This function sets up a palette of purple and green stripes.
-void SetupPurpleAndGreenPalette()
+CRGBPalette16 SetupPurpleAndGreenPalette()
 {
     CRGB purple = CHSV( HUE_PURPLE, 255, 255);
     CRGB green  = CHSV( HUE_GREEN, 255, 255);
@@ -136,6 +169,7 @@ void SetupPurpleAndGreenPalette()
                                    purple, purple, black,  black,
                                    green,  green,  black,  black,
                                    purple, purple, black,  black );
+    return currentPalette;
 }
 
 
@@ -188,3 +222,35 @@ const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
 // palette to Green (0,255,0) and Blue (0,0,255), and then retrieved 
 // the first sixteen entries from the virtual palette (of 256), you'd get
 // Green, followed by a smooth gradient from green-to-blue, and then Blue.
+
+
+int index = 0;
+Blend blends[11] = {
+    Blend(RainbowColors_p, LINEARBLEND),
+    Blend(RainbowStripeColors_p, NOBLEND),
+    Blend(RainbowStripeColors_p, LINEARBLEND),
+    Blend(SetupPurpleAndGreenPalette(), LINEARBLEND),
+    Blend(SetupTotallyRandomPalette(), LINEARBLEND),
+    Blend(SetupBlackAndWhiteStripedPalette(), NOBLEND),
+    Blend(SetupBlackAndWhiteStripedPalette(), LINEARBLEND),
+    Blend(CloudColors_p, LINEARBLEND),
+    Blend(PartyColors_p, LINEARBLEND),
+    Blend(myRedWhiteBluePalette_p, NOBLEND),
+    Blend(myRedWhiteBluePalette_p, LINEARBLEND)
+};
+
+void ChangePalette()
+{
+    index++;
+    if(index >= 11){
+        index = 1;
+    }
+   SetPalette(index);
+}
+
+void SetPalette(int i){
+   currentPalette = blends[i].palette;
+   currentBlending = blends[i].blend;
+}
+
+
