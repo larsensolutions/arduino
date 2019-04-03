@@ -5,7 +5,7 @@
 int sensorpin = 2;                 // analog pin used to connect the sharp sensor
 
 #define LED_PIN     5
-#define NUM_LEDS    6
+#define NUM_LEDS    4
 #define BRIGHTNESS  64
 #define LED_TYPE    WS2812B
 #define COLOR_ORDER GRB
@@ -52,6 +52,7 @@ void setup() {
     currentPalette = RainbowColors_p;
     currentBlending = LINEARBLEND;
 
+    SetPalette(8);
     pinMode(sensorpin, INPUT);
 }
 
@@ -60,6 +61,16 @@ double avg = 0;
 int nloop = 0;
 void loop()
 {
+    static uint8_t startIndex = 0;
+    startIndex = startIndex + 1; /* motion speed */
+    
+    FillLEDsFromPaletteColors(startIndex);
+    
+    FastLED.show();
+    FastLED.delay(1000 / UPDATES_PER_SECOND);
+}
+
+void palettRoulette(){
     int val = digitalRead(sensorpin);
     if(nloop < loops){
         avg += val;
@@ -81,14 +92,6 @@ void loop()
         ChangePalette();
         Serial.println("Change palette");
     }
-
-    static uint8_t startIndex = 0;
-    startIndex = startIndex + 1; /* motion speed */
-    
-    FillLEDsFromPaletteColors(startIndex);
-    
-    FastLED.show();
-    FastLED.delay(1000 / UPDATES_PER_SECOND);
 }
 
 void FillLEDsFromPaletteColors( uint8_t colorIndex)
