@@ -3,6 +3,7 @@
 #include <ArduinoOTA.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <ArduinoJson.h>
 #include <FS.h>
 #include <WebSocketsServer.h>
 #include "secret_key.h"
@@ -159,7 +160,7 @@ void startServer() { // Start a HTTP server with a file read handler and an uplo
   server.on("/edit.html",  HTTP_POST, []() {  // If a POST request is sent to the /edit.html address,
     server.send(200, "text/plain", ""); 
   }, handleFileUpload);                       // go to 'handleFileUpload'
-
+  server.on("/send", websocketSend);
   server.onNotFound(handleNotFound);          // if someone requests any other file or page, go to function 'handleNotFound'
                                               // and check if the file exists
 
@@ -173,6 +174,22 @@ void handleNotFound(){ // if the requested file or page doesn't exist, return a 
   if(!handleFileRead(server.uri())){          // check if the file exists in the flash memory (SPIFFS), if so, send it
     server.send(404, "text/plain", "404: File Not Found");
   }
+}
+
+void websocketSend(){
+  StaticJsonBuffer<200> jsonBuffer;
+
+  JsonObject& root = jsonBuffer.createObject();
+  root["sensor"] = "gps";
+  root["time"] = 1351824120;
+
+  JsonArray& data = root.createNestedArray("data");
+  data.add(48.756080, 6);  // 6 is the number of decimals to print
+  data.add(2.302038, 6);   // if not specified, 2 digits are printed
+  
+  String json;
+  root.printTo(json);
+  webSocket.sendTXT(0, json);
 }
 
 bool handleFileRead(String path) { // send the right file to the client (if it exists)
