@@ -81,7 +81,7 @@ void startWiFi() { // Start a Wi-Fi access point, and try to connect to some giv
   Serial.print(ssid);
   Serial.println("\" started\r\n");
 
-  wifiMulti.addAP(ssid, password);   // add Wi-Fi networks you want to connect to
+  wifiMulti.addAP(home_ssid, home_password);   // add Wi-Fi networks you want to connect to
 
   Serial.println("Connecting");
   while (wifiMulti.run() != WL_CONNECTED && WiFi.softAPgetStationNum() < 1) {  // Wait for the Wi-Fi to connect
