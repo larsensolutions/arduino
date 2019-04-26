@@ -94,3 +94,15 @@ ESC calibration script
 ## Contact
 
 Erik Andreas Larsen – [@grizzifrog](https://twitter.com/grizzlifrog) – eriklarsen.post@gmail.com
+
+## Board config "AllFeatures" for the ESP8266-07
+
+```js
+{
+    "board": "esp8266:esp8266:generic",
+    "configuration": "xtal=80,vt=flash,exception=disabled,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=dout,eesz=1M64,led=2,ip=lm2f,dbg=Disabled,lvl=None____,wipe=none,baud=115200",
+    "sketch": "AllFeatures\\AllFeatures.ino",
+    "port": "COM4",
+    "output": "../ArduinoOutput"
+}
+```
