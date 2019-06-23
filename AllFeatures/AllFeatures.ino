@@ -71,12 +71,7 @@ void doLights(float decibelValue){
   for (int i = 0; i <= NUM_LEDS; i++) {
     leds[i] = color;
     FastLED.show();
-    delay(40);
-  }
-  for (int i = NUM_LEDS; i >= 0; i--) {
-    leds[i] = color;
-    FastLED.show();
-    delay(40);
+    //delay(40);
   }
 }
 
@@ -89,6 +84,7 @@ void startWiFi() { // Start a Wi-Fi access point, and try to connect to some giv
   Serial.println("\" started\r\n");
 
   wifiMulti.addAP(home_ssid, home_password);   // add Wi-Fi networks you want to connect to
+  wifiMulti.addAP(work_ssid, work_password);   // add Wi-Fi networks you want to connect to
 
   Serial.println("Connecting");
   while (wifiMulti.run() != WL_CONNECTED && WiFi.softAPgetStationNum() < 1) {  // Wait for the Wi-Fi to connect
@@ -317,7 +313,7 @@ void setHue(int hue) { // Set the RGB LED to a given hue (color) (0° = Red, 120
 }
 
 #define SoundSensorPin A0  //this pin read the analog voltage from the sound level meter
-#define VREF 3.1  //voltage on AREF pin,default:operating voltage
+#define VREF 3.23  //voltage on AREF pin,default:operating voltage
 void readAndPrintAnalog(){
   float voltageValue, dbValue;
   // currentVal = analogRead(A0);
