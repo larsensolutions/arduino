@@ -1,0 +1,17 @@
+<script>
+
+function connect(){
+    var socket = new WebSocket("ws://192.168.10.117:81/")
+    socket.onopen = (event)=>{
+        console.log("Open", event);
+    };
+    socket.onclose= (event)=>{
+        console.log("close", event);
+    };
+    socket.onmessage=(event)=>{
+        console.log("message", event);
+    };
+} 
+
+connect();
+</script>

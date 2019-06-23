@@ -6,6 +6,7 @@
 #include <ArduinoJson.h>
 #include <FS.h>
 #include <WebSocketsServer.h>
+#include <FastLED.h>
 #include "secret_key.h"
 
 ESP8266WiFiMulti wifiMulti;       // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
@@ -21,18 +22,16 @@ const char *password = "thereisnospoon";   // The password required to connect t
 const char *OTAName = "ESP8266";           // A name and a password for the OTA service
 const char *OTAPassword = "esp8266";
 
-#define LED_RED     0            // specify the pins with an RGB LED connected
-#define LED_GREEN   2
-#define LED_BLUE    3
+#define LED_PIN     4
+#define NUM_LEDS    8
+CRGB leds[NUM_LEDS];
 
 const char* mdnsName = "esp8266"; // Domain name for the mDNS responder
 
 /*__________________________________________________________SETUP__________________________________________________________*/
 
 void setup() {
-  pinMode(LED_RED, OUTPUT);    // the pins with LEDs connected are outputs
-  pinMode(LED_GREEN, OUTPUT);
-  pinMode(LED_BLUE, OUTPUT);
+  FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
 
   Serial.begin(115200);        // Start the Serial communication to send messages to the computer
   delay(10);
@@ -54,23 +53,30 @@ void setup() {
 
 /*__________________________________________________________LOOP__________________________________________________________*/
 
-bool rainbow = false;             // The rainbow effect is turned off on startup
-
 unsigned long prevMillis = millis();
-int hue = 0;
+float decibelValue = 0;
 
 void loop() {
   webSocket.loop();                           // constantly check for websocket events
   server.handleClient();                      // run the server
   ArduinoOTA.handle();                        // listen for OTA events
 
-  if(rainbow) {                               // if the rainbow effect is turned on
-    if(millis() > prevMillis + 32) {          
-      if(++hue == 360)                        // Cycle through the color wheel (increment by one degree every 32 ms)
-        hue = 0;
-      setHue(hue);                            // Set the RGB LED to the right color
-      prevMillis = millis();
-    }
+  decibelValue = getDecibelValue();
+  websocketSend(decibelValue);
+  doLights(decibelValue);
+}
+
+void doLights(float decibelValue){
+  CRGB color = decibelValue > 80 ? CRGB( 255, 0, 0) : CRGB( 0, 0, 255);
+  for (int i = 0; i <= NUM_LEDS; i++) {
+    leds[i] = color;
+    FastLED.show();
+    delay(40);
+  }
+  for (int i = NUM_LEDS; i >= 0; i--) {
+    leds[i] = color;
+    FastLED.show();
+    delay(40);
   }
 }
 
@@ -107,9 +113,6 @@ void startOTA() { // Start the OTA service
 
   ArduinoOTA.onStart([]() {
     Serial.println("Start");
-    digitalWrite(LED_RED, 0);    // turn off the LEDs
-    digitalWrite(LED_GREEN, 0);
-    digitalWrite(LED_BLUE, 0);
   });
   ArduinoOTA.onEnd([]() {
     Serial.println("\r\nEnd");
@@ -125,6 +128,7 @@ void startOTA() { // Start the OTA service
     else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
     else if (error == OTA_END_ERROR) Serial.println("End Failed");
   });
+
   ArduinoOTA.begin();
   Serial.println("OTA ready\r\n");
 }
@@ -160,7 +164,7 @@ void startServer() { // Start a HTTP server with a file read handler and an uplo
   server.on("/edit.html",  HTTP_POST, []() {  // If a POST request is sent to the /edit.html address,
     server.send(200, "text/plain", ""); 
   }, handleFileUpload);                       // go to 'handleFileUpload'
-  server.on("/send", websocketSend);
+  //server.on("/send", websocketSend);
   server.onNotFound(handleNotFound);          // if someone requests any other file or page, go to function 'handleNotFound'
                                               // and check if the file exists
 
@@ -176,17 +180,16 @@ void handleNotFound(){ // if the requested file or page doesn't exist, return a 
   }
 }
 
-void websocketSend(){
+void websocketSend(float value){
   StaticJsonBuffer<200> jsonBuffer;
 
   JsonObject& root = jsonBuffer.createObject();
-  root["sensor"] = "gps";
+  root["sensor"] = "decibel";
   root["time"] = 1351824120;
 
   JsonArray& data = root.createNestedArray("data");
-  data.add(48.756080, 6);  // 6 is the number of decimals to print
-  data.add(2.302038, 6);   // if not specified, 2 digits are printed
-  
+  data.add(value);
+
   String json;
   root.printTo(json);
   webSocket.sendTXT(0, json);
@@ -247,7 +250,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght
     case WStype_CONNECTED: {              // if a new websocket connection is established
         IPAddress ip = webSocket.remoteIP(num);
         Serial.printf("[%u] Connected from %d.%d.%d.%d url: %s\n", num, ip[0], ip[1], ip[2], ip[3], payload);
-        rainbow = false;                  // Turn rainbow off when a new connection is established
+       // rainbow = false;                  // Turn rainbow off when a new connection is established
       }
       break;
     case WStype_TEXT:                     // if new text data is received
@@ -257,14 +260,10 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght
         int r = ((rgb >> 20) & 0x3FF);                     // 10 bits per color, so R: bits 20-29
         int g = ((rgb >> 10) & 0x3FF);                     // G: bits 10-19
         int b =          rgb & 0x3FF;                      // B: bits  0-9
-
-        analogWrite(LED_RED,   r);                         // write it to the LED output pins
-        analogWrite(LED_GREEN, g);
-        analogWrite(LED_BLUE,  b);
       } else if (payload[0] == 'R') {                      // the browser sends an R when the rainbow effect is enabled
-        rainbow = true;
+       // rainbow = true;
       } else if (payload[0] == 'N') {                      // the browser sends an N when the rainbow effect is disabled
-        rainbow = false;
+        //rainbow = false;
       }
       break;
   }
@@ -314,8 +313,28 @@ void setHue(int hue) { // Set the RGB LED to a given hue (color) (0° = Red, 120
   int r = rf*rf*1023;
   int g = gf*gf*1023;
   int b = bf*bf*1023;
-  
-  analogWrite(LED_RED,   r);    // Write the right color to the LED output pins
-  analogWrite(LED_GREEN, g);
-  analogWrite(LED_BLUE,  b);
+
+}
+
+#define SoundSensorPin A0  //this pin read the analog voltage from the sound level meter
+#define VREF 3.1  //voltage on AREF pin,default:operating voltage
+void readAndPrintAnalog(){
+  float voltageValue, dbValue;
+  // currentVal = analogRead(A0);
+// currentVal = map(currentVal, 0, 1023, 0, 255);
+  int val = analogRead(A0);
+  voltageValue = (val / 1024.0) * VREF;
+  dbValue = voltageValue * 50.0;  //convert voltage to decibel value
+  Serial.print(dbValue, 1);
+  Serial.println(" dBA");
+}
+
+float getDecibelValue(){
+  float voltageValue, dbValue;
+  // currentVal = analogRead(A0);
+// currentVal = map(currentVal, 0, 1023, 0, 255);
+  int val = analogRead(A0);
+  voltageValue = (val / 1024.0) * VREF;
+  dbValue = voltageValue * 50.0;  //convert voltage to decibel value
+  return dbValue;
 }

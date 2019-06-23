@@ -12,6 +12,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266mDNS.h>
+#include <ArduinoOTA.h>
 #include <SPI.h>
 #include <ArduinoJson.h>
 #include <WebSocketsClient.h>
@@ -24,7 +25,7 @@
 
 ESP8266WebServer server(80);
 WebSocketsClient webSocket;
-Controller74HC595 btnController(4, 5, 2); // On Fritzing component, PIN 4 & 5 are switched around! Very important to know!
+Controller74HC595 btnController(5, 4, 2); // On Fritzing component, PIN 4 & 5 are switched around! Very important to know! Should be 4,5,2 for fritzing, 5,4,2 for the prototype
 Controller74HC595 ledController(16, 2);
 AsyncHTTPClient httpClient;
 
@@ -112,7 +113,7 @@ void initLEDstates()
 {
   Serial.println("Initialise LED states");
   HTTPClient http;                                      // Declare object of class HTTPClient
-  http.begin("http://192.168.0.30:5000/api/v1/states"); // Specify request destination
+  http.begin("http://192.168.10.30:5000/api/v1/states"); // Specify request destination
   int httpCode = http.GET();                            // Send the request
   String payload = http.getString();
   
@@ -154,6 +155,9 @@ void setup(void)
     delay(500);
     Serial.print(".");
   }
+
+  startOTA();                  // Start the OTA service
+
   Serial.println("");
   Serial.print("Connected to ");
   Serial.println(ssid);
@@ -186,7 +190,7 @@ void setup(void)
 
   delay(500);
 
-  webSocket.begin("192.168.0.30", 5000, "/api/v1/echo");
+  webSocket.begin("192.168.10.30", 5000, "/api/v1/echo");
   // event handler
   webSocket.onEvent(webSocketEvent);
   // try ever 5000 again if connection has failed
@@ -216,9 +220,38 @@ void loop(void)
   {
     // Async http requests, so we can continue listening for button clicks
     // Light API indexes start at 1, so taking care of that with the ++
-    httpClient.initialize("http://192.168.0.30:5000/api/v1/toggle/" + String(btnController.activeButtonIndex += 1));
+    httpClient.initialize("http://192.168.10.30:5000/api/v1/toggle/" + String(btnController.activeButtonIndex += 1));
     httpClient.makeRequest(readSucceeded, readFailed);
   };
   delay(20);
   webSocket.loop();
+  ArduinoOTA.handle();
+}
+
+const char *OTAName = "ESP8266-Kitchen";           // A name and a password for the OTA service
+const char *OTAPassword = "esp8266";
+
+void startOTA() { // Start the OTA service
+  ArduinoOTA.setHostname(OTAName);
+  ArduinoOTA.setPassword(OTAPassword);
+
+  ArduinoOTA.onStart([]() {
+    Serial.println("Start");
+  });
+  ArduinoOTA.onEnd([]() {
+    Serial.println("\r\nEnd");
+  });
+  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
+    Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
+  });
+  ArduinoOTA.onError([](ota_error_t error) {
+    Serial.printf("Error[%u]: ", error);
+    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
+    else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+    else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+    else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+    else if (error == OTA_END_ERROR) Serial.println("End Failed");
+  });
+  ArduinoOTA.begin();
+  Serial.println("OTA ready\r\n");
 }

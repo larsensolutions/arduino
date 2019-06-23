@@ -62,7 +62,7 @@ void AsyncHTTPClient::initialize(String url) {
 #else
 	initialized = protocol == "http";
 #endif
-	host = "192.168.0.30";
+	host = "192.168.10.30";
 	port = 5000;
 	DEBUG(initialized);
 	request = "GET " + uri + " HTTP/1.1\r\nHost: " + host + "\r\n\r\n";
